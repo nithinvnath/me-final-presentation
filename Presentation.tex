@@ -48,7 +48,7 @@
 \setbeamersize{text margin left=1cm,text margin right=1cm} 
 
 
-\title{Secure Deduplication}
+\title{Secure Deduplication Across Files}
 
 % A subtitle is optional and this may be deleted
 %\subtitle{Optional Subtitle}
@@ -68,7 +68,7 @@
 % - Use the \inst command only if there are several affiliations.
 % - Keep it simple, no one is interested in your street address.
 
-\date{30-Oct-2015}
+\date{23-Jun-2016}
 % - Either use conference name or its abbreviation.
 % - Not really informative to the audience, more for people (including
 %   yourself) who are reading the slides online
@@ -113,15 +113,18 @@
 
 \begin{frame}{Deduplication}{}
   \begin{itemize}
+  \setlength\itemsep{1em}
   \item {
     Large amount of data stored in cloud storage.
+  }
+  \item {
+    Multiple users store the same file.
   }
   \item {
     Service providers need to employ space saving techniques to keep cost down.
   }
 	\begin{definition}
-		Deduplication is the technique that enables storage providers to store a single copy of the data
-		regardless of how many clients has uploaded the same data.
+		Technique that enables storage providers to store a single copy of the data.
 	\end{definition}
   \end{itemize}
 \end{frame}
@@ -132,6 +135,7 @@
 % with the \pause command:
 \begin{frame}{Deduplication in Action}
   \begin{itemize}
+  \setlength\itemsep{1em}
   \item {
     Alice uploads a file $M$ to the server $S$.
     \pause % The slide will pause after showing the first item
@@ -145,37 +149,17 @@
 	that $M$ is already stored and simply updates the metadata associated with $M$ to show
 	that the file is owned by both Alice and Bob.
   }
+  \item Make this an image
   \end{itemize}
 \end{frame}
 
-\subsection{Deduplication Types}
-\begin{frame}{Deduplication Types}
-  \begin{itemize}
-  \item {
-    Based on granularity
-    \pause % The slide will pause after showing the first item
-    \begin{enumerate}
-		\item \textit{File-level deduplication}
-		\item \textit{Block-level deduplication}
-	\end{enumerate}
-	\pause
-  }
-  \item {   
-	 Based on the architecture
-	 \pause
-	 \begin{enumerate}
-	 	\item \textit{Server-side deduplication}
-		
-		\item \textit{Client-side deduplication}
-	\end{enumerate}
-  }
-  \end{itemize}
-\end{frame}
+\subsection{Secure Deduplication}
+
 
 \begin{frame}{Secure Deduplication}
 \begin{itemize}
+	\setlength\itemsep{1em}
 	\item Deduplication along with privacy is a conflicting idea
-
 	\item Users would like their data to be encrypted
 	
 	\item Storage providers would like to identify the file uploaded by user
@@ -183,27 +167,136 @@
 \end{itemize}
 \end{frame}
 
-
-\subsection{History of Secure Deduplication}
-
-\begin{frame}{History of Secure Deduplication}
-	\begin{itemize}
-		\item Convergent Encryption
-		\item Proof of Ownership
-		\item Message Locked Encryption
-		\item DupLESS
-		\item Interactive Message Locked Encryption
-	\end{itemize}
+\begin{frame}{Motivation}
+\begin{itemize}
+	\setlength\itemsep{1em}
+	\item Photos taken one after the other are often \textit{almost} identical to each other.
+	\item These multiple files are not supported in traditional file level deduplication.
+	\item \textbf{Challenge}: Identify that plaintexts underneath these ciphertexts are 
+		close to each other and store only the difference.
+\end{itemize}
 \end{frame}
 
-
-\section{Convergent Encryption}
-\begin{frame}{Convergent Encryption}
+\begin{frame}{Problem Statement}
 	\begin{itemize}
-		\item Deterministic cryptosystem that produces  identical ciphertext files from identical plaintext files.
+	\setlength\itemsep{1em}
 		\item 
 	\end{itemize}
 \end{frame}
+
+\subsection{Related Work}
+
+\begin{frame}{Related Work}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Convergent Encryption (year?)
+		\item Message Locked Encryption
+		\item Interactive Message Locked Encryption
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Convergent Encryption}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Deterministic cryptosystem that produces  identical ciphertext files from identical plaintext files.
+		\item $K = H(M)$
+		\item $C = E(K, M)$
+		\item $M = D(K,C)$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Message Locked Encryption}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Interactive Message Locked Encryption}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\subsection{Preliminaries}
+
+\begin{frame}{Entropy}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Statistical Distance}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Extractors}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Deterministic Encryption}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Why is this meaningful in this setting?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Error Correcting Codes}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\subsection{Contributions}
+
+\begin{frame}{Our Work}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\subsection{Road-map}
+\begin{frame}{Road-map}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\section{Construction}
+\begin{frame}{Setting}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Adversarial Model}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Games}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item 
+	\end{itemize}
+\end{frame}
+
+
 
 \begin{frame}{Blocks}
 \begin{block}{Block Title}
@@ -278,3 +371,4 @@ Here is an example of an example block.
 \end{document}
 
 
+\grid
