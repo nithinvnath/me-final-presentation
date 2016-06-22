@@ -177,7 +177,7 @@
 	that $M$ is already stored and simply updates the metadata associated with $M$ to show
 	that the file is owned by both Alice and Bob.
   }
-  \item Make this an image
+  %\item Make this an image
   \end{itemize}
 \end{frame}
 
@@ -224,7 +224,7 @@
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item \textbf{Key Idea}: Derive the key from the message itself.
-		\item Generate a "tag" from the ciphertext.
+		\item Generate a ``tag" from the ciphertext.
 		\item Compare the tags of different ciphertexts to see if they are the same.
 		\item We can achieve security only for unpredictable data.
 	\end{itemize}
@@ -265,7 +265,7 @@
 		\item Entropy is a measure of randomness
 		\item Min-entropy of $X$ is the negative log of maximum predictability.
 		\begin{equation*}
-		    H_{\infty}(X) = - log(\max\limits_{x} \mathsf{Pr}[X=x])
+		    H_{\infty}(X) = - \log \left( \max\limits_{x} \mathsf{Pr} \left[ X=x \right] \right)
 		\end{equation*}
 		\begin{figure}
 		    \includegraphics[scale=0.2]{min_entropy}
@@ -293,7 +293,7 @@
 		\end{itemize}
 		\item $(l,m,\kappa,\epsilon)$-strong extractor $\Rightarrow$ $\forall$ min-entropy  $m$ distributions $W$ on $\bin^l$
 		    \begin{equation*}
-		        \textbf{SD}((\ext(W; X), X), (U_\kappa,X )) \leq \epsilon
+		        \textbf{SD}\left(\left( \ext\left( W; X\right), X \right), \left( U_\kappa,X \right) \right) \leq \epsilon
 		    \end{equation*}
 		 where $X$ is uniform on $\bin^s$
 	\end{itemize}
@@ -307,7 +307,7 @@
 		\item $|\smzero| = |\smone|= m(\secpar)$.
 		\item Guessing probability of source:
 		    \begin{equation*}
-                \textbf{GP}_\mathsf{S}(\secpar) = max_{i,b,d}(\textbf{GP}(\textbf{m}_b[i]))
+                \textbf{GP}_\mathsf{S}(\secpar) = max_{i,b,d}\left( \textbf{GP}\left( \textbf{m}_b \left[ i \right] \right) \right)
             \end{equation*}
         \item We require $\textbf{GP}_\mathsf{S}(\secpar)$ to be negligible.
 	\end{itemize}
@@ -319,7 +319,7 @@
 		\item $\mathsf{SE=(E, D)}$
 		\item $c \leftarrow \mathsf{E}(\secparam, k, m)$
 		\item $m \leftarrow \mathsf{D}(\secparam, k, c)$
-		\item \textbf{Correctness:}  $\mathsf{D}(\secparam , k, \mathsf{E}(\secparam , k, m)) = m\ \  \forall$  plaintexts $m \in \bin^*\ \  \forall$  keys $k \in \bin^{\kappa(\lambda)}\ \   \forall \secpar \in \NN.$
+		\item \textbf{Correctness:}  $\mathsf{D} \left( \secparam , k, \mathsf{E} \left( \secparam , k, m \right) \right) = m\ \  \forall$  plaintexts $m \in \bin^*\ \  \forall$  keys $k \in \bin^{\kappa(\lambda)}\ \   \forall \secpar \in \NN.$
 	\end{itemize}
 \end{frame}
 
@@ -344,8 +344,8 @@
         \item $m < n$ and
         \item $\forall \ppt \adv$, $\exists$ a negligible function $\negl$ such that $\forall$ security parameters $\secpar \in \NN$,
             \begin{multline*}
-            \mathsf{Pr} [ ( x_0, x_1) \leftarrow \adv ( \secparam, \mathcal{H} ): 
-x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
+            \mathsf{Pr} \left[ ( x_0, x_1) \leftarrow \adv \left( \secparam, \mathcal{H} \right): 
+x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \leq \negl
             \end{multline*}
     \end{itemize}
         \item Family of hash functions: $\mathsf{H} = ( \mathcal{HK, H} )$
@@ -539,7 +539,7 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item Recovery is guaranteed.
-		\item For $\adv$ to "win", $m_{\text{put on server}} \neq m_{\text{retrieved from server}}$ 
+		\item For $\adv$ to ``win", $m_{\text{put}} \neq m_{\text{retrieved}}$ 
 		\item Immutability of the tables means once put, file cannot be changed.
 		\item Reduces to the security of hash collision.
 	\end{itemize}
@@ -649,7 +649,7 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
 \section<presentation>*{\appendixname}
 \subsection<presentation>*{For Further Reading}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}%[allowframebreaks]
   \frametitle<presentation>{For Further Reading}
     
   \begin{thebibliography}{10}
@@ -678,11 +678,10 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
   \end{thebibliography}
 \end{frame}
 
-\begin{frame}{Thank you}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Thank You
-	\end{itemize}
+\begin{frame}{}
+\centering
+	\fontsize{20pt}{7.2}\selectfont
+	Thank You!
 \end{frame}
 
 \end{document}
