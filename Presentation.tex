@@ -45,6 +45,27 @@
 %\usetheme{Szeged}
 %\usetheme{Warsaw}
 
+\usepackage[n,advantage, operators ,sets ,
+        adversary,
+        landau,
+        probability,
+        notions,
+        ff,
+        mm,
+        primitives,
+        events,
+        complexity,
+        asymptotics,
+        keys,
+        lambda]{cryptocode}
+        
+\newcommand{\scheme}{\mathsf{DD-Across}}
+\newcommand{\msgspc}{\mathcal{M}}
+\newcommand{\client}{\sigma_C}
+\newcommand{\serv}{\sigma_S}
+\newcommand{\smzero}{\textbf{m}_0}
+\newcommand{\smone}{\textbf{m}_1}
+
 \setbeamersize{text margin left=1cm,text margin right=1cm} 
 
 
@@ -138,14 +159,14 @@
   \setlength\itemsep{1em}
   \item {
     Alice uploads a file $M$ to the server $S$.
-    \pause % The slide will pause after showing the first item
+    %\pause % The slide will pause after showing the first item
   }
   \item {   
 	 Bob requests to upload his copy of the same file $M$ to $S$.
   }
   % You can also specify when the content should appear
   % by using <n->:
-  \item<3-> {The server identifies
+  \item{The server identifies
 	that $M$ is already stored and simply updates the metadata associated with $M$ to show
 	that the file is owned by both Alice and Bob.
   }
@@ -209,14 +230,27 @@
 \begin{frame}{Message Locked Encryption}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item A cryptographic primitive. $\mathsf{MLE}=(\mathcal{P,K,E,D,T})$.
+		\item $\mathcal{K}_P(M)$ derives the key from the message.
+		\item $\mathcal{T}$ is the tag generation algorithm.
+		%\item Requires tag correctness and decryption correctness.
+		\item Semantic security cannot be achieved using MLE.
+		\item { [Include an image]}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Interactive Message Locked Encryption}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item Extension of $MLE$.
+		\item Uses interaction.
+		\item Defined using one algorithm and three protocols
+		\begin{enumerate}
+		    \item $\mathsf{Init}(\secparam)$ - The initialization algorithm.
+		    \item $\mathsf{Reg}$ - Register a client with the server.
+		    \item $\mathsf{Put}(M, \client)$ - Puts a plaintext $M$ and returns $f$, an identifier
+		    \item $\mathsf{Get}(f, \client)$ - Fetches the file $f$.
+		\end{enumerate}
 	\end{itemize}
 \end{frame}
 
@@ -225,7 +259,14 @@
 \begin{frame}{Entropy}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item Entropy is a measure of randomness
+		\item Min-entropy of $X$ is the negative log of maximum predictability.
+		\begin{equation*}
+		    H_{\infty}(X) = - log(\max\limits_{x} \mathsf{Pr}[X=x])
+		\end{equation*}
+		\begin{figure}
+		    \includegraphics[scale=0.2]{min_entropy}
+		\end{figure}
 	\end{itemize}
 \end{frame}
 
@@ -246,6 +287,9 @@
 \begin{frame}{Deterministic Encryption}
 	\begin{itemize}
 		\setlength\itemsep{1em}
+		\item $\mathsf{SE=(E, D)}$
+		\item $c \leftarrow \mathsf{E}(\secparam, k, m)$
+		\item $m \leftarrow \mathsf{D}(\secparam, k, c)$
 		\item Why is this meaningful in this setting?
 	\end{itemize}
 \end{frame}
@@ -253,7 +297,29 @@
 \begin{frame}{Error Correcting Codes}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item $(\msgspc, K, \tau)$-code $C$.
+		\item $C$ is a subset $\{w_0, w_1, \ldots, w_K \}$ of $\msgspc$.
+		\item $\tau > 0$ is the largest number such that there is at most one valid code word $c \in C$ for a message $w$ such that $\mathsf{dis}(w,c) \leq \tau$.
+		\item $\mathsf{Enc}$ - The map from $i$ to $w_i$.
+		\item $\mathsf{Dec}$ - The map that finds, given $w$, the $c \in C$ such that $\mathsf{dis}(w,c) \leq \tau$\
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Collision Resistant Hash Functions}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item $\mathcal{H}: \bin^n \rightarrow \bin^m$
+		\item Collision resistant if 
+		 \begin{itemize}
+        \item $m < n$ and
+        \item for all $\ppt \adv$, there exists a negligible function $\negl$ such that for all security parameters $\secpar \in \NN$,
+            \begin{multline*}
+            \mathsf{Pr} [ ( x_0, x_1) \leftarrow \adv ( \secparam, \mathcal{H} ): 
+x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
+            \end{multline*}
+    \end{itemize}
+        \item Family of hash functions: $\mathsf{H} = ( \mathcal{HK, H} )$
 	\end{itemize}
 \end{frame}
 
@@ -262,7 +328,13 @@
 \begin{frame}{Our Work}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item $\scheme$ (deduplication across files) which enables deduplication even for files that are close to
+	each other.
+	    \begin{figure}[H]
+	\includegraphics[scale=0.35]{example.png}
+	%\caption{Rectangle box represents the entire message space. Only one of many balls is shown}
+	\label{fig:example}
+	\end{figure}
 	\end{itemize}
 \end{frame}
 
@@ -270,7 +342,11 @@
 \begin{frame}{Road-map}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item Setting
+		\item Adversarial Model
+		\item Privacy Games
+		\item $\scheme$ construction
+		\item $\scheme$ proof
 	\end{itemize}
 \end{frame}
 
@@ -278,15 +354,24 @@
 \begin{frame}{Setting}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item An honest-but-curious server.
+		\item A set of clients.
+		\item $\adv$ can control a subset of these clients.
+		\item Formally modelled using a game $G$.
+		\item $G$ sets up and controls an instance of a server.
+		
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Adversarial Model}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
-	\end{itemize}
+        \item Adversary $\adv$ is invoked with access to a set of procedures.
+        \item \textsc{Msg} procedure allows adversary to set up multiple clients and to send arbitrary messages to the server.
+        \item \textsc{Init} procedure starts protocol instances on behalf of a legitimate client $L$, using inputs chosen by $A$.
+        \item \textsc{Step} procedure advances a  protocol instance by running the next step algorithm.
+        \item \textsc{State} procedure returns the server's state - including stored ciphertexts, public parameters, etc. Only read only access is gained using this.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Games}
@@ -301,29 +386,116 @@
 \begin{frame}{DD-Across Ingredients}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item A metric space ($\msgspc$, $\mathsf{dis}$)  with hamming distance as the distance metric.
+        \item An $(l,m,\kappa,\epsilon)$-strong extractor.
+        \item An error-correcting code $C = (\msgspc, K, \tau)$.
+        \item A collision resistant hash function family $\mathsf{H}=(\mathcal{HK, H})$.
+        \item $\mathsf{SE = (E,D)}$ denotes a symmetric encryption scheme.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{DD-Across Construction}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item $\scheme [C, \mathsf{H}, \mathsf{SE}]$.
+		\item Server maintains 3 tables
+		\begin{itemize}
+		\item $\textbf{fil}$: which contains the encryptions of the files uploaded by the clients.
+		\item $\textbf{delt}$: which stores the $\Delta$.
+		\item $\textbf{own}$: which stores the ownership information.
+		\end{itemize}		
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{DD-Across Theorem}
+\begin{frame}{DD-Across Construction - Init}
+		\begin{figure}[H]
+    \centering
+    \fbox{
+	\procedure{Init}{%
+	    S \sample \bin^{s (\lambda)}\\
+	    K_h \sample \mathcal{HK}(1^\lambda)\\
+		p = (S||K_h)\\
+		\textbf{U} \leftarrow \phi \\
+		\textbf{fil} \leftarrow \phi ; \textbf{delt} \leftarrow \phi \\
+		\textbf{own} \leftarrow \phi \\
+		\text{Ret } \sigma_S = (p, \textbf{U}, \textbf{fil}, \textbf{delt}, \textbf{own})
+	}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Construction - Reg}
+		\begin{figure}[H]
+    \centering
+    \fbox{
+	\procedure[width=0.5\textwidth]{Reg}{%
+		\textbf{Reg[1]($\epsilon$)} \> \> \textbf{Reg[2]($\sigma_{S}$)}\\
+		%k \sample \bin^{\kappa (\lambda)} \> \> \\
+		\>  \sendmessageright{top=$\epsilon$, width=2.5cm, length=2cm} \> u \sample \bin^{\lambda} \setminus \textbf{U} \\
+		\> \> \textbf{U} \leftarrow \textbf{U} \cup \{u\}\\
+		\> \sendmessageleft{top={$(u,p)$}, width=2.5cm, length=2cm} \> \\
+		\text{Ret } \sigma_c = (u, p) \> \>
+	}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Construction - Put}
+		\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.3]{put}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Construction - Get}
+		\begin{figure}[H]
+    \centering
+    \includegraphics[scale=0.35]{get}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Recovery}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item Recovery is guaranteed.
+		\item For $\adv$ to win, a mismatch in the plaintext $m$ put on the server and the plaintext $m'$ recovered using $\mathsf{Get}$.\\
+		\item Immutability of the tables means once put, it cannot be changed.
+		\item Only possibility is hash collision.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{DD-Across Proof}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item 
-	\end{itemize}
+\begin{frame}{DD-Across Privacy}
+
+		\begin{definition}
+        The error-correcting code $C=(\msgspc, K, \tau)$ is said to be compatible with a source $\mathsf{S}$ with min-entropy $\mu(\secpar)$ iff $2^{\mu(\secpar)-\tau}$ is negligible.
+        \label{def}
+        \end{definition}
+        \begin{theorem}
+    If $\mathcal{E}$ is CPA-secure and the code $C=(\msgspc, K, \tau)$ is compatible with the source $S$, then $\scheme_{RO}$[$\mathcal{E}$, $C$] \footnote{$\scheme_{RO}$ is the ROM analogue of $\scheme$ which models $\hash$ as a random oracle} is \textsc{Priv}-secure.
+\end{theorem} 
+
+\end{frame}
+
+\begin{frame}{DD-Across Privacy Hybrids}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[scale=0.35]{H2}
+      \caption{The $\mathsf{Put}$ protocol in game $H_2$}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Privacy Hybrids}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[scale=0.3]{H3}
+      \caption{The $\mathsf{Put}$ protocol in game $H_3$}
+    \end{figure}
+\end{frame}
+
+\begin{frame}{DD-Across Privacy Hybrids}
+    \begin{figure}[H]
+      \centering
+      \includegraphics[scale=0.3]{H4}
+      \caption{The $\mathsf{Put}$ protocol in game $H_4$}
+    \end{figure}
 \end{frame}
 
 \section{Conclusion}
