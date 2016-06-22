@@ -66,6 +66,17 @@
 \newcommand{\smzero}{\textbf{m}_0}
 \newcommand{\smone}{\textbf{m}_1}
 
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\let\oldfootnotesize\footnotesize
+\renewcommand*{\footnotesize}{\oldfootnotesize\tiny}
+
+
 \setbeamersize{text margin left=1cm,text margin right=1cm} 
 
 
@@ -177,6 +188,7 @@
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item Deduplication along with privacy is a conflicting idea
+
 	\item Users would like their data to be encrypted
 	
 	\item Storage providers would like to identify the file uploaded by user
@@ -184,23 +196,19 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motivation}
+\begin{frame}[allowframebreaks]{Motivation}
+\begin{figure}
+    \includegraphics[scale=0.25]{burst.jpg}
+\end{figure}
 \begin{itemize}
 	\setlength\itemsep{1em}
-	\item Photos taken one after the other are often \textit{almost} identical to each other.
+	\item Photos taken one after the other are often \textit{almost} identical to each other.\blfootnote{Photo courtesy: \url{https://commons.wikimedia.org/wiki/User:Papa_November}}
 	\item These multiple files are not supported in traditional file level deduplication.
 	\item \textbf{Challenge}: Identify that plaintexts underneath these ciphertexts are 
 		close to each other and store only the difference.
+    \item \textbf{Problem Statement: }Achieve deduplication across files, which are close to each other, in a privacy preserving way.
 \end{itemize}
 \end{frame}
-
-\begin{frame}{Problem Statement}
-	\begin{itemize}
-	\setlength\itemsep{1em}
-		\item Achieving deduplication across files in a privacy preserving way.
-	\end{itemize}
-\end{frame}
-
 
 %\begin{frame}{Related Work}
 %	\begin{itemize}
@@ -262,6 +270,7 @@
 		\begin{figure}
 		    \includegraphics[scale=0.2]{min_entropy}
 		\end{figure}
+		\item Guessing Probability of $X$ is $GP(X)=2^{-H_{\infty}(X)}$
 	\end{itemize}
 \end{frame}
 
@@ -275,17 +284,32 @@
 \begin{frame}{Extractors}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item A family of extractors $\ext = \{\ext_{\secpar}\}$
+		\item $\ext_{\lambda} : \bin^{s(\secpar)} \times \bin^{l(\secpar)} \rightarrow \bin^{\kappa(\secpar)}$
+		\begin{itemize}
+		    \item $s$ - seed length
+		    \item $l$ - input length 
+		    \item $\kappa$ - output length
+		\end{itemize}
+		\item $(l,m,\kappa,\epsilon)$-strong extractor $\Rightarrow$ $\forall$ min-entropy  $m$ distributions $W$ on $\bin^l$
+		    \begin{equation*}
+		        \textbf{SD}((\ext(W; X), X), (U_\kappa,X )) \leq \epsilon
+		    \end{equation*}
+		 where $X$ is uniform on $\bin^s$
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Source}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Formalizing the notion of unpredictability.
-		\item $(\smzero, \smone) \leftarrow S(\secparam, d)$ where $d \in \bin^*$.
-		\item All components of $\smzero$ and $\smone$ are unique.
+		\item The source S is an algorithm: $(\smzero, \smone) \leftarrow S(\secparam, d)$ where $d \in \bin^*$.
+		\item All components of the tuples $\smzero$ and $\smone$ are unique.
 		\item $|\smzero| = |\smone|= m(\secpar)$.
+		\item Guessing probability of source:
+		    \begin{equation*}
+                \textbf{GP}_\mathsf{S}(\secpar) = max_{i,b,d}(\textbf{GP}(\textbf{m}_b[i]))
+            \end{equation*}
+        \item We require $\textbf{GP}_\mathsf{S}(\secpar)$ to be negligible.
 	\end{itemize}
 \end{frame}
 
@@ -295,7 +319,7 @@
 		\item $\mathsf{SE=(E, D)}$
 		\item $c \leftarrow \mathsf{E}(\secparam, k, m)$
 		\item $m \leftarrow \mathsf{D}(\secparam, k, c)$
-		\item Why is this meaningful in this setting?
+		\item \textbf{Correctness:}  $\mathsf{D}(\secparam , k, \mathsf{E}(\secparam , k, m)) = m\ \  \forall$  plaintexts $m \in \bin^*\ \  \forall$  keys $k \in \bin^{\kappa(\lambda)}\ \   \forall \secpar \in \NN.$
 	\end{itemize}
 \end{frame}
 
