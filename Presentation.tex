@@ -173,10 +173,10 @@
   }
   % You can also specify when the content should appear
   % by using <n->:
-  \item{The server identifies
-	that $M$ is already stored and simply updates the metadata associated with $M$ to show
+  \item The server identifies
+	that $M$ is already stored. 
+   \item Server updates \textit{only the metadata} associated with $M$ to show
 	that the file is owned by both Alice and Bob.
-  }
   %\item Make this an image
   \end{itemize}
 \end{frame}
@@ -191,8 +191,7 @@
 
 	\item Users would like their data to be encrypted
 	
-	\item Storage providers would like to identify the file uploaded by user
-		to enable deduplication.
+	\item To enable deduplication, servers need to ``know the data"
 \end{itemize}
 \end{frame}
 
@@ -203,7 +202,7 @@
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item Photos taken one after the other are often \textit{almost} identical to each other.\blfootnote{Photo courtesy: \url{https://commons.wikimedia.org/wiki/User:Papa_November}}
-	\item These multiple files are not supported in traditional file level deduplication.
+	\item These multiple files are not supported in existing file level deduplication.
 	\item \textbf{Challenge}: Identify that plaintexts underneath these ciphertexts are 
 		close to each other and store only the difference.
     \item \textbf{Problem Statement: }Achieve deduplication across files, which are close to each other, in a privacy preserving way.
