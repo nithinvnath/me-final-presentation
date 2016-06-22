@@ -130,8 +130,6 @@
 % and table of contents.
 \section{Introduction}
 
-\subsection{Deduplication}
-
 \begin{frame}{Deduplication}{}
   \begin{itemize}
   \setlength\itemsep{1em}
@@ -149,8 +147,6 @@
 	\end{definition}
   \end{itemize}
 \end{frame}
-
-\subsection{Deduplication Example}
 
 % You can reveal the parts of a slide one at a time
 % with the \pause command:
@@ -205,44 +201,43 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Related Work}
 
-\begin{frame}{Related Work}
+%\begin{frame}{Related Work}
+%	\begin{itemize}
+%		\setlength\itemsep{1em}
+%		\item Convergent Encryption (year?)
+%		\item Message Locked Encryption
+%		\item Interactive Message Locked Encryption
+%	\end{itemize}
+%
+%\end{frame}
+%
+\begin{frame}{How to achieve Secure Deduplication}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Convergent Encryption (year?)
-		\item Message Locked Encryption
-		\item Interactive Message Locked Encryption
-	\end{itemize}
-
-\end{frame}
-
-\begin{frame}{Convergent Encryption}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item Deterministic cryptosystem that produces  identical ciphertext files from identical plaintext files.
-		\item $K = H(M)$
-		\item $C = E(K, M)$
-		\item $M = D(K,C)$
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Message Locked Encryption}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item A cryptographic primitive. $\mathsf{MLE}=(\mathcal{P,K,E,D,T})$.
-		\item $\mathcal{K}_P(M)$ derives the key from the message.
-		\item $\mathcal{T}$ is the tag generation algorithm.
-		%\item Requires tag correctness and decryption correctness.
-		\item Semantic security cannot be achieved using MLE.
-		\item { [Include an image]}
+		\item \textbf{Key Idea}: Derive the key from the message itself.
+		\item Generate a "tag" from the ciphertext.
+		\item Compare the tags of different ciphertexts to see if they are the same.
+		\item We can achieve security only for unpredictable data.
 	\end{itemize}
 \end{frame}
+%
+%\begin{frame}{Message Locked Encryption}
+%	\begin{itemize}
+%		\setlength\itemsep{1em}
+%		\item A cryptographic primitive. $\mathsf{MLE}=(\mathcal{P,K,E,D,T})$.
+%		\item $\mathcal{K}_P(M)$ derives the key from the message.
+%		\item $\mathcal{T}$ is the tag generation algorithm.
+%		%\item Requires tag correctness and decryption correctness.
+%		\item Semantic security cannot be achieved using MLE.
+%		\item { [Include an image]}
+%	\end{itemize}
+%\end{frame}
 
-\begin{frame}{Interactive Message Locked Encryption}
+\begin{frame}{Related Work - Interactive Message Locked Encryption}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item Extension of $MLE$.
+		%\item Extension of $MLE$.
 		\item Uses interaction.
 		\item Defined using one algorithm and three protocols
 		\begin{enumerate}
@@ -270,17 +265,27 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Statistical Distance}
+%\begin{frame}{Statistical Distance}
+%	\begin{itemize}
+%		\setlength\itemsep{1em}
+%		\item 
+%	\end{itemize}
+%\end{frame}
+
+\begin{frame}{Extractors}
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item 
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Extractors}
+\begin{frame}{Source}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item Formalizing the notion of unpredictability.
+		\item $(\smzero, \smone) \leftarrow S(\secparam, d)$ where $d \in \bin^*$.
+		\item All components of $\smzero$ and $\smone$ are unique.
+		\item $|\smzero| = |\smone|= m(\secpar)$.
 	\end{itemize}
 \end{frame}
 
@@ -313,7 +318,7 @@
 		\item Collision resistant if 
 		 \begin{itemize}
         \item $m < n$ and
-        \item for all $\ppt \adv$, there exists a negligible function $\negl$ such that for all security parameters $\secpar \in \NN$,
+        \item $\forall \ppt \adv$, $\exists$ a negligible function $\negl$ such that $\forall$ security parameters $\secpar \in \NN$,
             \begin{multline*}
             \mathsf{Pr} [ ( x_0, x_1) \leftarrow \adv ( \secparam, \mathcal{H} ): 
 x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
@@ -366,11 +371,14 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
 \begin{frame}{Adversarial Model}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-        \item Adversary $\adv$ is invoked with access to a set of procedures.
-        \item \textsc{Msg} procedure allows adversary to set up multiple clients and to send arbitrary messages to the server.
-        \item \textsc{Init} procedure starts protocol instances on behalf of a legitimate client $L$, using inputs chosen by $A$.
-        \item \textsc{Step} procedure advances a  protocol instance by running the next step algorithm.
-        \item \textsc{State} procedure returns the server's state - including stored ciphertexts, public parameters, etc. Only read only access is gained using this.
+        \item Adversary $\adv$ is invoked with oracle access to the following:\\
+        \begin{itemize}
+            \setlength\itemsep{1em}
+            \item \textsc{Msg()}: allows adversary to set up multiple clients and to send arbitrary messages to the server.
+            \item \textsc{Init()}: starts protocol instances on behalf of a legitimate client $L$, using inputs chosen by $A$.
+            \item \textsc{Step()}: advances a  protocol instance by running the next step algorithm.
+            \item \textsc{State()}: returns the server's state - including stored ciphertexts, public parameters, etc.
+        \end{itemize}
     \end{itemize}
 \end{frame}
 
@@ -456,9 +464,9 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item Recovery is guaranteed.
-		\item For $\adv$ to win, a mismatch in the plaintext $m$ put on the server and the plaintext $m'$ recovered using $\mathsf{Get}$.\\
-		\item Immutability of the tables means once put, it cannot be changed.
-		\item Only possibility is hash collision.
+		\item For $\adv$ to "win", $m_{\text{put on server}} \neq m_{\text{retrieved from server}}$ 
+		\item Immutability of the tables means once put, file cannot be changed.
+		\item Reduces to the security of hash collision.
 	\end{itemize}
 \end{frame}
 
@@ -477,7 +485,7 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
 \begin{frame}{DD-Across Privacy Hybrids}
     \begin{figure}[H]
       \centering
-      \includegraphics[scale=0.35]{H2}
+      \includegraphics[scale=0.3]{H2}
       \caption{The $\mathsf{Put}$ protocol in game $H_2$}
     \end{figure}
 \end{frame}
@@ -498,37 +506,46 @@ x_0 \neq x_1 \wedge \mathcal{H} ( x_0 ) = \mathcal{H}(x_1) ] \leq \negl
     \end{figure}
 \end{frame}
 
-\section{Conclusion}
-\begin{frame}{Summary}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item
-    The \alert{first main message} of your talk in one or two lines.
-  \item
-    The \alert{second main message} of your talk in one or two lines.
-  \item
-    Perhaps a \alert{third message}, but not more than that.
-	\end{itemize}
-\end{frame}
+%\section{Conclusion}
+%\begin{frame}{Summary}
+%	\begin{itemize}
+%		\setlength\itemsep{1em}
+%		\item
+%    
+%  \item
+%    Constructed a scheme called $\scheme$ that allows deduplication across files.
+%  \item
+%    Perhaps a \alert{third message}, but not more than that.
+%	\end{itemize}
+%\end{frame}
 
 \begin{frame}{Open Problems and Future Work}
 	\begin{itemize}
 		\setlength\itemsep{1em}
-		\item 
+		\item $\scheme$ allows deduplication across files when the files map to same code-word.
+		\item Connection of Fuzzy Extractors with the existing scheme.
+		\item Implementing the scheme to record real world performance gains.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Blocks}
-\begin{block}{Block Title}
-You can also highlight sections of your presentation in a block, with it's own title
-\end{block}
-\begin{theorem}
-There are separate environments for theorems, examples, definitions and proofs.
-\end{theorem}
-\begin{example}
-Here is an example of an example block.
-\end{example}
+\begin{frame}{Thank you}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item Questions?
+	\end{itemize}
 \end{frame}
+
+%\begin{frame}{Blocks}
+%\begin{block}{Block Title}
+%You can also highlight sections of your presentation in a block, with it's own title
+%\end{block}
+%\begin{theorem}
+%There are separate environments for theorems, examples, definitions and proofs.
+%\end{theorem}
+%\begin{example}
+%Here is an example of an example block.
+%\end{example}
+%\end{frame}
 
 % Placing a * after \section means it will not show in the
 % outline or table of contents.
@@ -559,34 +576,34 @@ Here is an example of an example block.
 
 
 % All of the following is optional and typically not needed. 
-\appendix
-\section<presentation>*{\appendixname}
-\subsection<presentation>*{For Further Reading}
+%\appendix
+%\section<presentation>*{\appendixname}
+%\subsection<presentation>*{For Further Reading}
 
-\begin{frame}[allowframebreaks]
-  \frametitle<presentation>{For Further Reading}
-    
-  \begin{thebibliography}{10}
-    
-  \beamertemplatebookbibitems
-  % Start with overview books.
-
-  \bibitem{Author1990}
-    A.~Author.
-    \newblock {\em Handbook of Everything}.
-    \newblock Some Press, 1990.
- 
-    
-  \beamertemplatearticlebibitems
-  % Followed by interesting articles. Keep the list short. 
-
-  \bibitem{Someone2000}
-    S.~Someone.
-    \newblock On this and that.
-    \newblock {\em Journal of This and That}, 2(1):50--100,
-    2000.
-  \end{thebibliography}
-\end{frame}
+%\begin{frame}[allowframebreaks]
+%  \frametitle<presentation>{For Further Reading}
+%    
+%  \begin{thebibliography}{10}
+%    
+%  \beamertemplatebookbibitems
+%  % Start with overview books.
+%
+%  \bibitem{Author1990}
+%    A.~Author.
+%    \newblock {\em Handbook of Everything}.
+%    \newblock Some Press, 1990.
+% 
+%    
+%  \beamertemplatearticlebibitems
+%  % Followed by interesting articles. Keep the list short. 
+%
+%  \bibitem{Someone2000}
+%    S.~Someone.
+%    \newblock On this and that.
+%    \newblock {\em Journal of This and That}, 2(1):50--100,
+%    2000.
+%  \end{thebibliography}
+%\end{frame}
 
 \end{document}
 
