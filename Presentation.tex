@@ -195,6 +195,16 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}{How to achieve Secure Deduplication}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item \textbf{Key Idea}: Derive the key from the message itself.
+		\item Generate a ``tag" from the ciphertext.
+		\item Compare the tags of different ciphertexts to see if they are the same.
+		\item We can achieve security only for unpredictable data.
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[allowframebreaks]{Motivation}
 \begin{figure}
     \includegraphics[scale=0.25]{burst.jpg}
@@ -202,11 +212,26 @@
 \begin{itemize}
 	\setlength\itemsep{1em}
 	\item Photos taken one after the other are often \textit{almost} identical to each other.\blfootnote{Photo courtesy: \url{https://commons.wikimedia.org/wiki/User:Papa_November}}
-	\item These multiple files are not supported in existing file level deduplication.
+	\item These multiple files are not supported by existing file level deduplication.
 	\item \textbf{Challenge}: Identify that plaintexts underneath these ciphertexts are 
 		close to each other and store only the difference.
     \item \textbf{Problem Statement: }Achieve deduplication across files, which are close to each other, in a privacy preserving way.
 \end{itemize}
+\end{frame}
+
+\subsection{Contribution}
+
+\begin{frame}{Our Work}
+	\begin{itemize}
+		\setlength\itemsep{1em}
+		\item $\scheme$ (deduplication across files) which enables deduplication even for files that are close to
+	each other.
+	    \begin{figure}[H]
+	\includegraphics[scale=0.35]{example.png}
+	%\caption{Rectangle box represents the entire message space. Only one of many balls is shown}
+	\label{fig:example}
+	\end{figure}
+	\end{itemize}
 \end{frame}
 
 %\begin{frame}{Related Work}
@@ -219,15 +244,7 @@
 %
 %\end{frame}
 %
-\begin{frame}{How to achieve Secure Deduplication}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item \textbf{Key Idea}: Derive the key from the message itself.
-		\item Generate a ``tag" from the ciphertext.
-		\item Compare the tags of different ciphertexts to see if they are the same.
-		\item We can achieve security only for unpredictable data.
-	\end{itemize}
-\end{frame}
+
 %
 %\begin{frame}{Message Locked Encryption}
 %	\begin{itemize}
@@ -302,7 +319,8 @@
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item The source S is an algorithm: $(\smzero, \smone) \leftarrow S(\secparam, d)$ where $d \in \bin^*$.
-		\item All components of the tuples $\smzero$ and $\smone$ are unique.
+		\item $\smzero$ and $\smone$ are vectors over $\bin^*$
+		%\item All components of the tuples $\smzero$ and $\smone$ are unique.
 		\item $|\smzero| = |\smone|= m(\secpar)$.
 		\item Guessing probability of source:
 		    \begin{equation*}
@@ -318,7 +336,7 @@
 		\item $\mathsf{SE=(E, D)}$
 		\item $c \leftarrow \mathsf{E}(\secparam, k, m)$
 		\item $m \leftarrow \mathsf{D}(\secparam, k, c)$
-		\item \textbf{Correctness:}  $\mathsf{D} \left( \secparam , k, \mathsf{E} \left( \secparam , k, m \right) \right) = m\ \  \forall$  plaintexts $m \in \bin^*\ \  \forall$  keys $k \in \bin^{\kappa(\lambda)}\ \   \forall \secpar \in \NN.$
+		\item \textbf{Correctness:}  $\mathsf{D} \left( \secparam , k, \mathsf{E} \left( \secparam , k, m \right) \right) = m,\ \  \forall$  plaintexts $m \in \bin^*,\ \  \forall$  keys $k \in \bin^{\kappa(\lambda)},\ \   \forall \secpar \in \NN.$
 	\end{itemize}
 \end{frame}
 
@@ -351,20 +369,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
 	\end{itemize}
 \end{frame}
 
-\subsection{Contributions}
 
-\begin{frame}{Our Work}
-	\begin{itemize}
-		\setlength\itemsep{1em}
-		\item $\scheme$ (deduplication across files) which enables deduplication even for files that are close to
-	each other.
-	    \begin{figure}[H]
-	\includegraphics[scale=0.35]{example.png}
-	%\caption{Rectangle box represents the entire message space. Only one of many balls is shown}
-	\label{fig:example}
-	\end{figure}
-	\end{itemize}
-\end{frame}
 
 %\subsection{Road-map}
 %\begin{frame}{Road-map}
@@ -411,7 +416,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
         \begin{bbrbox}[name=Adversary]
         \pseudocode{
             \\
-            \textsc{Reg()} \text{//Set up a legitimate client} \\
+            \textsc{Reg()} \text{ //Set up a legitimate client} \\
             \textsc{Init()} \\
             \textsc{Step()} \\
             \textsc{Msg()} \\
@@ -419,7 +424,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
             win \leftarrow \textsc{WinCheck()}
         }
         \end{bbrbox}
-        \bbroutput{win}
+        \bbroutput{$win$}
         \begin{bbrchallenger}{ChaA}
         \begin{bbrbox}[name=Challenger,minheight=2cm]
         \pseudocode{
@@ -445,7 +450,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
             \textsc{State()} \\
         }
         \end{bbrbox}
-        \bbroutput{b'}
+        \bbroutput{$b'$}
         \begin{bbrchallenger}{ChaA}
         \begin{bbrbox}[name=Challenger,minheight=2cm]
         \pseudocode{
@@ -597,7 +602,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
 	\begin{itemize}
 		\setlength\itemsep{1em}
 		\item $\scheme$ allows deduplication across files when the files map to same code-word.
-		\item Connection of Fuzzy Extractors with the existing scheme.
+		%\item Connection of Fuzzy Extractors with the existing scheme.
 		\item Implementing the scheme to record real world performance gains.
 	\end{itemize}
 \end{frame}
@@ -673,7 +678,7 @@ x_0 \neq x_1 \wedge \mathcal{H} \left( x_0 \right) = \mathcal{H}(x_1) \right] \l
   \bibitem{iMLE}
     Mihir Bellare, Sriram Keelveedhi
     \newblock Interactive Message-Locked Encryption and Secure Deduplication.
-    \newblock {\em Public Key Cryptography – EUROCRYPT}, 2015.
+    \newblock {\em Public Key Cryptography}, 2015.
   \end{thebibliography}
 \end{frame}
 
